@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.3445" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/appointment_list_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/contact_list_item.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/date_time_picker.xml" value="0.17350557244174267" />
+        <entry key="app/src/main/res/layout/fragment_add_appointment.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_add_contact.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_appointment_detail.xml" value="0.2391304347826087" />
+        <entry key="app/src/main/res/layout/fragment_appointment_list.xml" value="0.67" />
+        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.12037037037037036" />
+        <entry key="app/src/main/res/layout/fragment_contact_detail.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_item_detail.xml" value="0.15982776089159068" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

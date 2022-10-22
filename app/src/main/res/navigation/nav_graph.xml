@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/contactListFragment">
+
+    <fragment
+        android:id="@+id/contactListFragment"
+        android:name="com.example.mappe2.ContactListFragment"
+        android:label="fragment_contact_list"
+        tools:layout="@layout/fragment_contact_list" >
+        <action
+            android:id="@+id/action_contactListFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_contactListFragment_to_contactDetailFragment"
+            app:destination="@id/contactDetailFragment" />
+        <action
+            android:id="@+id/action_contactListFragment_to_appointmentListFragment"
+            app:destination="@id/appointmentListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.example.mappe2.AddContactFragment"
+        android:label="AddContactFragment" >
+        <action
+            android:id="@+id/action_addContactFragment_to_contactListFragment"
+            app:destination="@id/contactListFragment" />
+        <argument
+            android:name="contact_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactDetailFragment"
+        android:name="com.example.mappe2.ContactDetailFragment"
+        android:label="fragment_contact_detail"
+        tools:layout="@layout/fragment_contact_detail" >
+        <action
+            android:id="@+id/action_contactDetailFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <argument
+            android:name="contact_id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/appointmentListFragment"
+        android:name="com.example.mappe2.AppointmentListFragment"
+        android:label="AppointmentListFragment" >
+        <action
+            android:id="@+id/action_appointmentListFragment_to_appointmentDetailFragment"
+            app:destination="@id/appointmentDetailFragment" />
+        <action
+            android:id="@+id/action_appointmentListFragment_to_addAppointmentFragment"
+            app:destination="@id/addAppointmentFragment" />
+        <action
+            android:id="@+id/action_appointmentListFragment_to_contactListFragment"
+            app:destination="@id/contactListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/appointmentDetailFragment"
+        android:name="com.example.mappe2.AppointmentDetailFragment"
+        android:label="fragment_appointment_detail"
+        tools:layout="@layout/fragment_appointment_detail" >
+        <argument
+            android:name="appointment_id"
+            app:argType="integer" />
+        <action
+            android:id="@+id/action_appointmentDetailFragment_to_addAppointmentFragment"
+            app:destination="@id/addAppointmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAppointmentFragment"
+        android:name="com.example.mappe2.AddAppointmentFragment"
+        android:label="AddAppointmentFragment" >
+        <action
+            android:id="@+id/action_addAppointmentFragment_to_appointmentListFragment"
+            app:destination="@id/appointmentListFragment" />
+        <argument
+            android:name="appointment_id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+</navigation>

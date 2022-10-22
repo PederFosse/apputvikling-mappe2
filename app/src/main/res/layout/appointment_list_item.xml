@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:descendantFocusability="blocksDescendants">
+
+    <TextView
+        android:id="@+id/appointment_name"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/margin_between_elements"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        app:layout_constraintEnd_toStartOf="@+id/appointment_place"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="name" />
+
+    <TextView
+        android:id="@+id/appointment_place"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/appointment_name"
+        android:layout_marginStart="@dimen/margin_between_elements"
+        android:fontFamily="sans-serif-medium"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/appointment_time"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/appointment_name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="place"  android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/appointment_time"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/appointment_place"
+        android:layout_marginStart="@dimen/margin_between_elements"
+        android:fontFamily="sans-serif-medium"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/appointment_contact"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/appointment_place"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="time"  android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/appointment_contact"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/appointment_time"
+        android:layout_marginStart="@dimen/margin_between_elements"
+        android:fontFamily="sans-serif-medium"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/appointment_time"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/appointment_time"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="contact"  android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
