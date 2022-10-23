@@ -29,7 +29,7 @@ class AppointmentListAdapter(private val onItemClicked: (Appointment) -> Unit): 
             binding.apply {
                 appointmentName.text = appointment.name
                 appointmentPlace.text = appointment.place
-                appointmentTime.text = appointment.time.toString()
+                appointmentTime.text = Utilities.fromDateTimeToString(appointment.time)
                 appointmentContact.text = appointment.contactId.toString()
             }
         }

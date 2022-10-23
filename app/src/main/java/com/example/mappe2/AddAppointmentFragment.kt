@@ -2,6 +2,7 @@ package com.example.mappe2
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.mappe2.data.Appointment
 import com.example.mappe2.data.ContactViewModel
 import com.example.mappe2.data.ContactViewModelFactory
 import com.example.mappe2.databinding.FragmentAddAppointmentBinding
+import java.time.LocalDateTime
 import java.util.*
 
 class AddAppointmentFragment : Fragment() {
@@ -47,7 +49,7 @@ class AddAppointmentFragment : Fragment() {
                 this.navigationArgs.appointmentId,
                 this.binding.appointmentName.text.toString(),
                 this.binding.appointmentPlace.text.toString(),
-                this.binding.appointmentTime.text.toString(),
+                parseMeetingTime(binding.appointmentTime.text.toString()),
                 this.binding.appointmentContact.text.toString()
             )
             val action = AddAppointmentFragmentDirections.actionAddAppointmentFragmentToAppointmentListFragment()
@@ -65,16 +67,30 @@ class AddAppointmentFragment : Fragment() {
     }
 
     private fun addNewAppointment() {
+        Log.d("TIME","Date input: ${this.binding.appointmentTime.text.toString()}")
         if (isEntryValid()) {
             viewModel.addNewAppointment(
                 binding.appointmentName.text.toString(),
                 binding.appointmentPlace.text.toString(),
-                this.binding.appointmentTime.text.toString(),
+                parseMeetingTime(binding.appointmentTime.text.toString()),
                 binding.appointmentContact.text.toString()
             )
             val action = AddAppointmentFragmentDirections.actionAddAppointmentFragmentToAppointmentListFragment()
             findNavController().navigate(action)
         }
+    }
+
+    private fun parseMeetingTime(time: String): LocalDateTime {
+        val dateAndTime = this.binding.appointmentTime.text.toString().split(" ")
+        val date = dateAndTime[0].split("/")
+        val time = dateAndTime[1].split(":")
+        return LocalDateTime.of(
+            date[2].toInt(),
+            date[1].toInt(),
+            date[0].toInt(),
+            time[0].toInt(),
+            time[1].toInt()
+        );
     }
 
     override fun onCreateView(

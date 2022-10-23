@@ -2,6 +2,7 @@ package com.example.mappe2.data
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import java.util.*
 
 class ContactViewModel(private val contactDao: ContactDao, private val appointmentDao: AppointmentDao): ViewModel() {
@@ -56,11 +57,11 @@ class ContactViewModel(private val contactDao: ContactDao, private val appointme
         return true
     }
 
-    private fun getNewAppointment(name: String, place: String, time: String, contactId: Int): Appointment {
+    private fun getNewAppointment(name: String, place: String, time: LocalDateTime, contactId: Int): Appointment {
         return Appointment(name=name, place=place, time=time, contactId=contactId);
     }
 
-    private fun getUpdatedAppointment(id: Int, name: String, place: String, time: String, contactId: Int): Appointment {
+    private fun getUpdatedAppointment(id: Int, name: String, place: String, time: LocalDateTime, contactId: Int): Appointment {
         return Appointment(id, name, place, time, contactId);
     }
 
@@ -72,12 +73,12 @@ class ContactViewModel(private val contactDao: ContactDao, private val appointme
         viewModelScope.launch { appointmentDao.update(appointment) }
     }
 
-    fun addNewAppointment(name: String, place: String, time: String, contactId: String) {
+    fun addNewAppointment(name: String, place: String, time: LocalDateTime, contactId: String) {
         val newAppointment = getNewAppointment(name, place, time, contactId.toInt());
         insertContact(newAppointment)
     }
 
-    fun updateAppointment(id: Int, name: String, place: String, time: String, contactId: String) {
+    fun updateAppointment(id: Int, name: String, place: String, time: LocalDateTime, contactId: String) {
         val updatedAppointment = getUpdatedAppointment(id, name, place, time, contactId.toInt());
         updateAppointment(updatedAppointment)
     }
