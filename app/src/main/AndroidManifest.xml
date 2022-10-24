@@ -3,8 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mappe2">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+
     <application
-        android:name="com.example.mappe2.ContactsApplication"
+        android:name=".ContactsApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,11 +17,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mappe2"
         tools:targetApi="31">
-
+        <service
+            android:name=".MyPeriodic"
+            android:enabled="true"
+            android:exported="true"></service>
         <service
             android:name=".MySendService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".MainActivity"
@@ -30,6 +36,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.SEND_SMS" />
 
 </manifest>

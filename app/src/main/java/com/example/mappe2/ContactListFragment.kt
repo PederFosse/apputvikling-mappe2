@@ -60,7 +60,10 @@ class ContactListFragment : Fragment() {
         }
 
         binding.enableSMS.setOnClickListener {
-            activity?.startService(Intent(activity, MySendService::class.java))
+            //activity?.startService(Intent(activity, MySendService::class.java))
+            activity?.startService(Intent(activity, MyPeriodic::class.java))
         }
+        // TODO: Disable periodic
+
     }
 }
