@@ -55,5 +55,14 @@
         app:layout_constraintTop_toBottomOf="@+id/recyclerView"
         tools:text="Appointments" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enableSMS"
+        android:text="Enable SMS reminders"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

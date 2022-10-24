@@ -1,5 +1,6 @@
 package com.example.mappe2
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -56,6 +57,10 @@ class ContactListFragment : Fragment() {
         binding.floatingActionButton.setOnClickListener{
             val action = ContactListFragmentDirections.actionContactListFragmentToAddContactFragment()
             this.findNavController().navigate(action)
+        }
+
+        binding.enableSMS.setOnClickListener {
+            activity?.startService(Intent(activity, MySendService::class.java))
         }
     }
 }

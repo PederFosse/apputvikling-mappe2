@@ -1,6 +1,7 @@
 package com.example.mappe2
 
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.nav_host_fragment)
 
@@ -34,9 +36,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setSharedPreferance()
 
         checkForSmsPermission()
-
-        val intent = Intent(this, MySendService::class.java)
-        startService(intent)
 
     }
 
