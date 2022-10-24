@@ -1,10 +1,13 @@
 package com.example.mappe2
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -21,6 +24,8 @@ import com.example.mappe2.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
     private lateinit var navController: NavController
+    private val CHANNEL_ID = "channel01"
+    private val NOTIFICATION_ID = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +39,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setupActionBarWithNavController(this, navController)
 
         setSharedPreferance()
-
         checkForSmsPermission()
-
+        createNotificationChannel()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -68,7 +72,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val edit = sharedPref.edit()
         edit.clear()
-        edit.putString("defaultMessage", "Dette er standard SMS dersom avtalen ikke har en melding")
+        edit.putString("defaultMessage", "Husk avtalen med meg!")
         edit.putString("messageTime", "9:00")
         edit.apply()
         val fef = sharedPref.getString("defaultMessage", null)
@@ -93,6 +97,21 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         } else {
             // Permission already granted. Enable the SMS button.
 
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "AppointmentNotifications"
+            val descriptionText = "AppointmentNotifications will be shown here"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
