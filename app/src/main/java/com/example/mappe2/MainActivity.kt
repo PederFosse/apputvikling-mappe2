@@ -5,16 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import com.example.mappe2.data.ContactViewModel
+import com.example.mappe2.data.ContactViewModelFactory
+import com.example.mappe2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
     private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,6 +37,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val intent = Intent(this, MySendService::class.java)
         startService(intent)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -55,15 +62,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
 
-    //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     fun setSharedPreferance () {
-        val sharedPref = getPreferences(Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val edit = sharedPref.edit()
         edit.clear()
         edit.putString("defaultMessage", "Dette er standard SMS dersom avtalen ikke har en melding")
         edit.putString("messageTime", "9:00")
+        edit.apply()
+        val fef = sharedPref.getString("defaultMessage", null)
     }
     private fun checkForSmsPermission() {
         if (ActivityCompat.checkSelfPermission(
