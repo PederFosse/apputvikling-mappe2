@@ -37,7 +37,7 @@ class MyPeriodic : Service() {
 
     fun scheduleAlarm() {
         val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intervalSec = 15 //60 * 60 * 24
+        val intervalSec = 10 //60 * 60 * 24
         val intervalMs: Long = 60 * 1000
 
         Toast.makeText(applicationContext, "SCHEDULED PERIODIC CHECK", Toast.LENGTH_SHORT).show()

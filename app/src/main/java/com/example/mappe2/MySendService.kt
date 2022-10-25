@@ -81,12 +81,12 @@ class MySendService : LifecycleService() {
         listAppointments.forEach{
             val contact = listContacts.find { c -> c.id == it.contactId }
             val customMessage = it.message
-            Log.d(TAG, contact.toString())
+            Log.d(TAG, customMessage)
+
             if (contact != null ) {
-                Log.d(TAG, "contact is not null")
                 var message = "Appointment with " + contact.contactName + " at " + it.place + ". "
                 val phonenumber = contact.phoneNumber
-                message += if (customMessage==="") {
+                message += if (customMessage=="") {
                     defaultMessage
                 } else  {
                     customMessage
@@ -95,7 +95,7 @@ class MySendService : LifecycleService() {
                 try {
                     Log.d(TAG, phonenumber)
                     smsManager.sendTextMessage(phonenumber, null, message, null, null)
-                    Toast.makeText(applicationContext, "Message Sent to " + contact.contactName, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, "Success!!")
                 } catch (e: Exception) {
                     Toast.makeText(applicationContext, "Error, message not sent: "+e.message.toString(), Toast.LENGTH_LONG).show()
