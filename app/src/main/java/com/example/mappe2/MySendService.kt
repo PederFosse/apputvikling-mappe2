@@ -1,26 +1,18 @@
 package com.example.mappe2
 
-import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.os.Build
-import android.os.IBinder
 import android.telephony.SmsManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
-import com.example.mappe2.Utilities.fromDateTimeToString
 import com.example.mappe2.data.Appointment
 import com.example.mappe2.data.Contact
 import com.example.mappe2.data.ContactRoomDatabase
-import kotlinx.coroutines.flow.collect
-import java.time.LocalDate
-import java.time.LocalDateTime
+
 val TAG = "MELDINGGUTTA"
 
 
@@ -84,28 +76,33 @@ class MySendService : LifecycleService() {
         val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val defaultMessage = sharedPref.getString("defaultMessage", null)
 
-        var obj=SmsManager.getDefault()
+        var smsManager=SmsManager.getDefault()
 
         listAppointments.forEach{
             val contact = listContacts.find { c -> c.id == it.contactId }
-            val customMessage = null  // TODO: Peder fix :) Takk
-            if (contact != null) {
+            val customMessage = it.message
+            Log.d(TAG, contact.toString())
+            if (contact != null ) {
+                Log.d(TAG, "contact is not null")
                 var message = "Appointment with " + contact.contactName + " at " + it.place + ". "
                 val phonenumber = contact.phoneNumber
-                if (customMessage===null) {
-                    message += defaultMessage
+                message += if (customMessage==="") {
+                    defaultMessage
                 } else  {
-                    message += customMessage
+                    customMessage
                 }
-
-                // TODO: Erstatt default message med appointment sin melding dersom den har en melding
 
                 try {
-                    obj.sendTextMessage(phonenumber, null, message, null, null)
-                    Toast.makeText(applicationContext, "Message Sent to " + it.name, Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, phonenumber)
+                    smsManager.sendTextMessage(phonenumber, null, message, null, null)
+                    Toast.makeText(applicationContext, "Message Sent to " + contact.contactName, Toast.LENGTH_SHORT).show()
+                    Log.d(TAG, "Success!!")
                 } catch (e: Exception) {
                     Toast.makeText(applicationContext, "Error, message not sent: "+e.message.toString(), Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "Failure")
                 }
+            } else {
+                Log.d(TAG, "Contact was null")
             }
         }
     }

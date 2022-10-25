@@ -22,7 +22,7 @@ class Converters {
     }
 }
 
-@Database(entities = [Contact::class, Appointment::class], version=5, exportSchema=false)
+@Database(entities = [Contact::class, Appointment::class], version=6, exportSchema=false)
 @TypeConverters(Converters::class)
 abstract class ContactRoomDatabase: RoomDatabase() {
     abstract fun contactDao(): ContactDao

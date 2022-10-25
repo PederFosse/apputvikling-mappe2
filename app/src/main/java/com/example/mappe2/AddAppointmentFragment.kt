@@ -37,6 +37,7 @@ class AddAppointmentFragment : Fragment() {
         binding.apply {
             appointmentName.setText(appointment.name, TextView.BufferType.SPANNABLE)
             appointmentPlace.setText(appointment.place, TextView.BufferType.SPANNABLE)
+            appointmentMessage.setText(appointment.message, TextView.BufferType.SPANNABLE)
             appointmentTime.setText(appointment.time.toString(), TextView.BufferType.SPANNABLE)
             appointmentContact.setText(appointment.contactId.toString(), TextView.BufferType.SPANNABLE)
             saveAction.setOnClickListener{updateAppointment()}
@@ -49,6 +50,7 @@ class AddAppointmentFragment : Fragment() {
                 this.navigationArgs.appointmentId,
                 this.binding.appointmentName.text.toString(),
                 this.binding.appointmentPlace.text.toString(),
+                binding.appointmentMessage.toString(),
                 parseMeetingTime(binding.appointmentTime.text.toString()),
                 this.binding.appointmentContact.text.toString()
             )
@@ -72,6 +74,7 @@ class AddAppointmentFragment : Fragment() {
             viewModel.addNewAppointment(
                 binding.appointmentName.text.toString(),
                 binding.appointmentPlace.text.toString(),
+                binding.appointmentMessage.toString(),
                 parseMeetingTime(binding.appointmentTime.text.toString()),
                 binding.appointmentContact.text.toString()
             )

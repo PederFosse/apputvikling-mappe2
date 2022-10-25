@@ -57,12 +57,20 @@ class ContactViewModel(private val contactDao: ContactDao, private val appointme
         return true
     }
 
-    private fun getNewAppointment(name: String, place: String, time: LocalDateTime, contactId: Int): Appointment {
-        return Appointment(name=name, place=place, time=time, contactId=contactId);
+    private fun getNewAppointment(name: String, place: String, message: String?,  time: LocalDateTime, contactId: Int): Appointment {
+        var optionalMessage = ""
+        if (message !== null) {
+            optionalMessage = message
+        }
+        return Appointment(name=name, place=place, time=time, message=optionalMessage, contactId=contactId);
     }
 
-    private fun getUpdatedAppointment(id: Int, name: String, place: String, time: LocalDateTime, contactId: Int): Appointment {
-        return Appointment(id, name, place, time, contactId);
+    private fun getUpdatedAppointment(id: Int, name: String, place: String, message: String?, time: LocalDateTime, contactId: Int): Appointment {
+        var optionalMessage = ""
+        if (message !== null) {
+            optionalMessage = message
+        }
+        return Appointment(id, name, place, optionalMessage, time, contactId);
     }
 
     private fun insertContact(appointment: Appointment) {
@@ -73,13 +81,13 @@ class ContactViewModel(private val contactDao: ContactDao, private val appointme
         viewModelScope.launch { appointmentDao.update(appointment) }
     }
 
-    fun addNewAppointment(name: String, place: String, time: LocalDateTime, contactId: String) {
-        val newAppointment = getNewAppointment(name, place, time, contactId.toInt());
+    fun addNewAppointment(name: String, place: String, message: String?, time: LocalDateTime, contactId: String) {
+        val newAppointment = getNewAppointment(name, place, message, time, contactId.toInt());
         insertContact(newAppointment)
     }
 
-    fun updateAppointment(id: Int, name: String, place: String, time: LocalDateTime, contactId: String) {
-        val updatedAppointment = getUpdatedAppointment(id, name, place, time, contactId.toInt());
+    fun updateAppointment(id: Int, name: String, place: String, message: String?, time: LocalDateTime, contactId: String) {
+        val updatedAppointment = getUpdatedAppointment(id, name, place,message, time, contactId.toInt());
         updateAppointment(updatedAppointment)
     }
 

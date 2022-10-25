@@ -7,6 +7,7 @@
     <string name="appointment_place_req">place</string>
     <string name="appointment_time_req">Time (dd/mm/yyyy hh:mm)</string>
     <string name="appointment_contact_req">Contact id</string>
+    <string name="appointment_message_req">Message to contact</string>
     <string name="save_action">Save contact</string>
     <string name="save_appointment">Save appointment</string>
     <string name="add_new_item">Add new Contact</string>

@@ -12,6 +12,7 @@ data class Appointment (
     val id: Int = 0,
     val name: String,
     val place: String,
+    val message: String,
     val time: LocalDateTime,
     val contactId: Int,
 )

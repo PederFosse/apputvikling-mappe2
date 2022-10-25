@@ -6,6 +6,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import android.util.Log
 import android.widget.Toast
 import java.util.*
 
@@ -36,7 +37,7 @@ class MyPeriodic : Service() {
 
     fun scheduleAlarm() {
         val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intervalSec = 60 //60 * 60 * 24
+        val intervalSec = 15 //60 * 60 * 24
         val intervalMs: Long = 60 * 1000
 
         Toast.makeText(applicationContext, "SCHEDULED PERIODIC CHECK", Toast.LENGTH_SHORT).show()
@@ -45,10 +46,9 @@ class MyPeriodic : Service() {
         c.add(Calendar.SECOND, intervalSec)
         val afterSetDelay = c.timeInMillis
 
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, afterSetDelay, intervalMs, smsIntent) // repeating interval
-        //manager.setExact(AlarmManager.RTC, afterSetDelay, periodicIntent)
-        //manager.setExact(AlarmManager.RTC, afterSetDelay, smsIntent)
-
+        //manager.setRepeating(AlarmManager.RTC_WAKEUP, afterSetDelay, intervalMs, smsIntent) // repeating interval
+        manager.setExact(AlarmManager.RTC, afterSetDelay, periodicIntent)
+        manager.setExact(AlarmManager.RTC, afterSetDelay, smsIntent)
     }
 
 

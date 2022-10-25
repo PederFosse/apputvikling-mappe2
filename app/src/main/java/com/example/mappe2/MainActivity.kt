@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -78,6 +79,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val fef = sharedPref.getString("defaultMessage", null)
     }
     private fun checkForSmsPermission() {
+        Log.d(TAG,"Asking for permissions")
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.SEND_SMS
@@ -85,6 +87,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(applicationContext, "Permission not granted", Toast.LENGTH_SHORT).show()
+            Log.d(TAG,"Permissions not granted")
 
             // Permission not yet granted. Use requestPermissions().
             // MY_PERMISSIONS_REQUEST_SEND_SMS is an
@@ -96,7 +99,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             )
         } else {
             // Permission already granted. Enable the SMS button.
-
+            Log.d(TAG, "Permissions was granted")
         }
     }
 

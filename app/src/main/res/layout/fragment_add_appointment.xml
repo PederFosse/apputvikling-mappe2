@@ -79,6 +79,24 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/appointment_message_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin"
+            android:hint="@string/appointment_message_req"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appointment_time_label">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/appointment_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textAutoComplete|textCapWords"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/appointment_contact_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -86,7 +104,7 @@
             android:hint="@string/appointment_contact_req"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appointment_time_label">
+            app:layout_constraintTop_toBottomOf="@+id/appointment_message_label">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/appointment_contact"
