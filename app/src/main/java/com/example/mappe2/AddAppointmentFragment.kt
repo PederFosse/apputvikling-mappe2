@@ -50,7 +50,7 @@ class AddAppointmentFragment : Fragment() {
                 this.navigationArgs.appointmentId,
                 this.binding.appointmentName.text.toString(),
                 this.binding.appointmentPlace.text.toString(),
-                binding.appointmentMessage.toString(),
+                binding.appointmentMessage.text.toString(),
                 parseMeetingTime(binding.appointmentTime.text.toString()),
                 this.binding.appointmentContact.text.toString()
             )
@@ -63,7 +63,6 @@ class AddAppointmentFragment : Fragment() {
         return viewModel.isValidAppointment(
             binding.appointmentName.text.toString(),
             binding.appointmentPlace.text.toString(),
-            binding.appointmentMessage.text.toString(),
             binding.appointmentTime.text.toString(),
             binding.appointmentContact.text.toString()
         )
