@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -25,8 +27,8 @@ import com.example.mappe2.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
     private lateinit var navController: NavController
+    private lateinit var br: BroadcastReceiver
     private val CHANNEL_ID = "channel01"
-    private val NOTIFICATION_ID = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,34 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         setSharedPreferance()
         checkForSmsPermission()
         createNotificationChannel()
+
+        br = MyBroadcastReceiver()
+        val filter = IntentFilter("START_REMINDERS")
+        registerReceiver(br, filter)
+
+        var brIntent = Intent(this, MyBroadcastReceiver::class.java)
+
+
+
+        val btn_enable = findViewById(R.id.enableReminders) as Button
+        btn_enable.setOnClickListener {
+            Toast.makeText(this@MainActivity, "ENABLE BR", Toast.LENGTH_SHORT).show()
+            brIntent.putExtra("START", true)
+            sendBroadcast(brIntent)
+        }
+        val btn_disable = findViewById(R.id.disableReminders) as Button
+        btn_disable.setOnClickListener {
+            Toast.makeText(this@MainActivity, "DISABLE BR", Toast.LENGTH_SHORT).show()
+            brIntent.putExtra("START", false)
+            sendBroadcast(brIntent)
+        }
+
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(br)
     }
 
     override fun onSupportNavigateUp(): Boolean {

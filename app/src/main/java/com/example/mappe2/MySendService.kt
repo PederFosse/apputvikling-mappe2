@@ -67,6 +67,7 @@ class MySendService : LifecycleService() {
 
 
     fun sendMessages (listAppointments: List<Appointment>?, listContacts: List<Contact>?) {
+        Log.d("channel01", "SMS runde...")
         if (listAppointments === null || listContacts === null) {
             Toast.makeText(applicationContext, "No messages will be sent", Toast.LENGTH_SHORT).show()
             return }

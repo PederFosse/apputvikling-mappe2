@@ -17,10 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mappe2"
         tools:targetApi="31">
+
+        <receiver
+            android:name=".MyBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="MyReceiver" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".MyPeriodic"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".MySendService"
             android:enabled="true"
