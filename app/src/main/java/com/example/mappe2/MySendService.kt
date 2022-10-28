@@ -49,7 +49,7 @@ class MySendService : LifecycleService() {
 
 
         sendMessages(myAppointments, myContacts)
-        notificationPopup(myAppointments)
+
 
         return super.onStartCommand(intent, flags, startId)
     }
@@ -74,24 +74,19 @@ class MySendService : LifecycleService() {
     fun sendMessages (listAppointments: List<Appointment>?, listContacts: List<Contact>?) {
         Log.d("channel01", "SMS runde...")
 
-        // wait for data from DB for 10 seconds max
-        var i = 10
-        while ((listAppointments === null || listContacts === null) && i > 0){
-            Log.d("channel01", "Wait 1 sec")
-            Thread.sleep(1000L)
-            i--
-        }
-
         val todaysMessages = listAppointments?.filter { appointment ->
             DateUtils.isToday(appointment.time.atZone(ZoneId.of("Europe/Oslo")).toInstant().toEpochMilli())
         }
 
         if (todaysMessages === null || listContacts === null) {
             Toast.makeText(applicationContext, "No messages will be sent", Toast.LENGTH_SHORT).show()
-            return
-        }
+            Log.d("channel01", "No messages will be sent")
 
-        // TODO: Filter out appointments that are today only
+            return
+        } else {
+
+
+        notificationPopup(todaysMessages)
 
         val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val defaultMessage = sharedPref.getString("defaultMessage", null)
@@ -124,6 +119,7 @@ class MySendService : LifecycleService() {
             } else {
                 Log.d(TAG, "Contact was null")
             }
+        }
         }
     }
 }

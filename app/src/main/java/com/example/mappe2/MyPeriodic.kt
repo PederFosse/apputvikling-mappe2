@@ -12,17 +12,14 @@ import java.util.*
 
 class MyPeriodic : Service() {
 
-    lateinit var periodicIntent: PendingIntent
     lateinit var smsIntent: PendingIntent
     lateinit var manager: AlarmManager
 
 
     override fun onCreate() {
+        super.onCreate()
         Log.d("channel01", "Periodic create")
 
-        super.onCreate()
-        val periodicLaunchIntent = Intent(this, MyPeriodic::class.java)
-        periodicIntent = PendingIntent.getService(this, 0, periodicLaunchIntent, 0)
 
         val smsLaunchIntent = Intent(this, MySendService::class.java)
         smsIntent = PendingIntent.getService(this, 1, smsLaunchIntent, 0)
@@ -61,6 +58,9 @@ class MyPeriodic : Service() {
         c.add(Calendar.SECOND, intervalSec)
         val afterSetDelay = c.timeInMillis
 
+        // to get observers running
+        startService(Intent(this, MySendService::class.java))
+        Thread.sleep(1000L)
         manager.setRepeating(AlarmManager.RTC_WAKEUP, afterSetDelay, intervalMs, smsIntent) // repeating interval
         //manager.setExact(AlarmManager.RTC, afterSetDelay, periodicIntent)
         //manager.setExact(AlarmManager.RTC, afterSetDelay, smsIntent)
