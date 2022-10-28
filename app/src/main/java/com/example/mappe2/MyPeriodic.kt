@@ -26,6 +26,9 @@ class MyPeriodic : Service() {
 
         manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
+        // to get observers running
+        startService(Intent(this, MySendService::class.java))
+
 
     }
 
@@ -58,9 +61,6 @@ class MyPeriodic : Service() {
         c.add(Calendar.SECOND, intervalSec)
         val afterSetDelay = c.timeInMillis
 
-        // to get observers running
-        startService(Intent(this, MySendService::class.java))
-        Thread.sleep(1000L)
         manager.setRepeating(AlarmManager.RTC_WAKEUP, afterSetDelay, intervalMs, smsIntent) // repeating interval
         //manager.setExact(AlarmManager.RTC, afterSetDelay, periodicIntent)
         //manager.setExact(AlarmManager.RTC, afterSetDelay, smsIntent)
