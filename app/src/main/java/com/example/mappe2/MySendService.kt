@@ -3,6 +3,7 @@ package com.example.mappe2
 import android.content.Context
 import android.content.Intent
 import android.telephony.SmsManager
+import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -13,6 +14,7 @@ import com.example.mappe2.data.Appointment
 import com.example.mappe2.data.Contact
 import com.example.mappe2.data.ContactRoomDatabase
 import kotlinx.coroutines.delay
+import java.time.ZoneId
 
 val TAG = "channel01"
 
@@ -43,6 +45,8 @@ class MySendService : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Toast.makeText(applicationContext, "Started mySendService", Toast.LENGTH_SHORT).show()
+
+
 
         sendMessages(myAppointments, myContacts)
         notificationPopup(myAppointments)
@@ -78,7 +82,11 @@ class MySendService : LifecycleService() {
             i--
         }
 
-        if (listAppointments === null || listContacts === null) {
+        val todaysMessages = listAppointments?.filter { appointment ->
+            DateUtils.isToday(appointment.time.atZone(ZoneId.of("Europe/Oslo")).toInstant().toEpochMilli())
+        }
+
+        if (todaysMessages === null || listContacts === null) {
             Toast.makeText(applicationContext, "No messages will be sent", Toast.LENGTH_SHORT).show()
             return
         }
@@ -90,7 +98,7 @@ class MySendService : LifecycleService() {
 
         var smsManager=SmsManager.getDefault()
 
-        listAppointments.forEach{
+        todaysMessages.forEach{
             val contact = listContacts.find { c -> c.id == it.contactId }
             val customMessage = it.message
             Log.d(TAG, customMessage)
