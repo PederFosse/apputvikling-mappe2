@@ -43,12 +43,16 @@ class MySendService : LifecycleService() {
         }
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Toast.makeText(applicationContext, "Started mySendService", Toast.LENGTH_SHORT).show()
 
+        val sendit = intent.getBooleanExtra("SEND", false)
+        if (sendit) {
+            sendMessages(myAppointments, myContacts)
+        } else {
+            Log.d("channel01", "PRIME observers _____________")
 
-
-        sendMessages(myAppointments, myContacts)
+        }
 
 
         return super.onStartCommand(intent, flags, startId)

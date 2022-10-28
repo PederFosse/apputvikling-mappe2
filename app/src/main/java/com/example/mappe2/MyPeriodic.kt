@@ -22,12 +22,16 @@ class MyPeriodic : Service() {
 
 
         val smsLaunchIntent = Intent(this, MySendService::class.java)
+        smsLaunchIntent.putExtra("SEND", true)
         smsIntent = PendingIntent.getService(this, 1, smsLaunchIntent, 0)
+
 
         manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         // to get observers running
-        startService(Intent(this, MySendService::class.java))
+        var primeObservers = Intent(this, MySendService::class.java)
+        primeObservers.putExtra("SEND", false)
+        startService(primeObservers)
 
 
     }
