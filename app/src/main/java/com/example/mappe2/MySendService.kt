@@ -12,8 +12,9 @@ import androidx.lifecycle.asLiveData
 import com.example.mappe2.data.Appointment
 import com.example.mappe2.data.Contact
 import com.example.mappe2.data.ContactRoomDatabase
+import kotlinx.coroutines.delay
 
-val TAG = "MELDINGGUTTA"
+val TAG = "channel01"
 
 
 
@@ -68,9 +69,19 @@ class MySendService : LifecycleService() {
 
     fun sendMessages (listAppointments: List<Appointment>?, listContacts: List<Contact>?) {
         Log.d("channel01", "SMS runde...")
+
+        // wait for data from DB for 10 seconds max
+        var i = 10
+        while ((listAppointments === null || listContacts === null) && i > 0){
+            Log.d("channel01", "Wait 1 sec")
+            Thread.sleep(1000L)
+            i--
+        }
+
         if (listAppointments === null || listContacts === null) {
             Toast.makeText(applicationContext, "No messages will be sent", Toast.LENGTH_SHORT).show()
-            return }
+            return
+        }
 
         // TODO: Filter out appointments that are today only
 
