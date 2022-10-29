@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import android.widget.Toast
+import java.lang.Integer.parseInt
 import java.util.*
 
 class MyPeriodic : Service() {
@@ -55,19 +55,44 @@ class MyPeriodic : Service() {
 
     fun scheduleAlarm() {
 
+        val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var messageTime = sharedPref.getString("messageTime", null)
 
-        val intervalSec = 10 //60 * 60 * 24
-        val intervalMs: Long = 60 * 1000
+        if (messageTime != null) {
+            Log.d("channel01", messageTime)
 
-        Toast.makeText(applicationContext, "SCHEDULED PERIODIC CHECK", Toast.LENGTH_SHORT).show()
+        } else {
+            Log.d("channel01", "No time")
+            messageTime = "09:30"
+        }
 
-        val c = Calendar.getInstance()
-        c.add(Calendar.SECOND, intervalSec)
-        val afterSetDelay = c.timeInMillis
+        val intervalMs: Long = 1000 * 60 * 60 * 24
 
-        manager.setRepeating(AlarmManager.RTC_WAKEUP, afterSetDelay, intervalMs, smsIntent) // repeating interval
-        //manager.setExact(AlarmManager.RTC, afterSetDelay, periodicIntent)
-        //manager.setExact(AlarmManager.RTC, afterSetDelay, smsIntent)
+
+        val prefHour = parseInt("${messageTime[0]}${messageTime[1]}")
+        val prefMinute = parseInt("${messageTime[3]}${messageTime[4]}")
+
+        val cNow = Calendar.getInstance()
+        val cPref = Calendar.getInstance()
+        cPref.set(Calendar.HOUR_OF_DAY, prefHour)
+        cPref.set(Calendar.MINUTE, prefMinute)
+        cPref.set(Calendar.SECOND, 0)
+
+        val diff = cPref.timeInMillis - cNow.timeInMillis
+        var wait = 0L
+
+        wait = if (diff >= 0) {
+            cNow.timeInMillis + diff;
+        } else {
+            cNow.timeInMillis + (1000 * 60 * 60 * 24) - diff
+        }
+
+        wait += 1000 * 10
+
+                    Log.d("channel01", "Wait ${wait}")
+
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, wait, AlarmManager.INTERVAL_DAY, smsIntent) // repeating interval
     }
 
 

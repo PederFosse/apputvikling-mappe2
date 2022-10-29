@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val edit = sharedPref.edit()
         edit.clear()
         edit.putString("defaultMessage", "Husk avtalen med meg!")
-        edit.putString("messageTime", "9:00")
+        edit.putString("messageTime", "15:32")
         edit.apply()
         val fef = sharedPref.getString("defaultMessage", null)
     }
