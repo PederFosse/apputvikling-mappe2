@@ -22,4 +22,5 @@
     <string name="no">No</string>
     <string name="appointments">Appointments</string>
     <string name="contacts">Contacts</string>
+    <string name="reminders">Reminders</string>
 </resources>

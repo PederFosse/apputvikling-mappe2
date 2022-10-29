@@ -19,8 +19,5 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         } else {
             context.stopService(Intent(context, MyPeriodic::class.java))
         }
-
-
-
     }
 }

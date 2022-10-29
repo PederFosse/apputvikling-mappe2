@@ -29,13 +29,13 @@ class MySendService : LifecycleService() {
 
     override fun onCreate() {
         super.onCreate()
+        //Setter opp observers på db lesing
         val db = ContactRoomDatabase.getDatabase(applicationContext)
         db.appointmentDao().getAppointments().asLiveData().observe(this) {
             appointments -> appointments.let {
             myAppointments = appointments
             }
         }
-
         db.contactDao().getContacts().asLiveData().observe(this) {
                 contacts -> contacts.let {
             myContacts = contacts
@@ -44,17 +44,11 @@ class MySendService : LifecycleService() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        Toast.makeText(applicationContext, "Started mySendService", Toast.LENGTH_SHORT).show()
-
         val sendit = intent.getBooleanExtra("SEND", false)
+        // Henter intent boolean og sender kun sms om send er true. Hvis send ikke er true opprettes kun obervere og lytter etter data
         if (sendit) {
             sendMessages(myAppointments, myContacts)
-        } else {
-            Log.d("channel01", "PRIME observers _____________")
-
         }
-
-
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -73,34 +67,30 @@ class MySendService : LifecycleService() {
         }
     }
 
-
-
     fun sendMessages (listAppointments: List<Appointment>?, listContacts: List<Contact>?) {
-        Log.d("channel01", "SMS runde...")
-
+        // Filterer så kun avtaler som er i dag blir inkludert
         val todaysMessages = listAppointments?.filter { appointment ->
             DateUtils.isToday(appointment.time.atZone(ZoneId.of("Europe/Oslo")).toInstant().toEpochMilli())
         }
 
         if (todaysMessages === null || listContacts === null) {
-            Toast.makeText(applicationContext, "No messages will be sent", Toast.LENGTH_SHORT).show()
-            Log.d("channel01", "No messages will be sent")
-
+            // Returner om data er tom
             return
         } else {
 
 
         notificationPopup(todaysMessages)
 
+        // Henter shared preference data
         val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val defaultMessage = sharedPref.getString("defaultMessage", null)
 
         var smsManager=SmsManager.getDefault()
 
+            // Utføres for hver avtale
         todaysMessages.forEach{
             val contact = listContacts.find { c -> c.id == it.contactId }
             val customMessage = it.message
-            Log.d(TAG, customMessage)
 
             if (contact != null ) {
                 var message = "Appointment with " + contact.contactName + " at " + it.place + ". "
@@ -112,12 +102,8 @@ class MySendService : LifecycleService() {
                 }
 
                 try {
-                    Log.d(TAG, phonenumber)
                     smsManager.sendTextMessage(phonenumber, null, message, null, null)
-                    Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, "Success!!")
                 } catch (e: Exception) {
-                    Toast.makeText(applicationContext, "Error, message not sent: "+e.message.toString(), Toast.LENGTH_LONG).show()
                     Log.d(TAG, "Failure")
                 }
             } else {

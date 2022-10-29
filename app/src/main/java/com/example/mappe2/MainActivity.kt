@@ -1,6 +1,7 @@
 package com.example.mappe2
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -11,19 +12,13 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
 import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import com.example.mappe2.data.ContactViewModel
-import com.example.mappe2.data.ContactViewModelFactory
-import com.example.mappe2.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private val MY_PERMISSIONS_REQUEST_SEND_SMS = 1
@@ -31,9 +26,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var br: BroadcastReceiver
     private val CHANNEL_ID = "channel01"
 
+    @SuppressLint("UseSwitchCompatOrMaterialCode", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         val navHostFragment = supportFragmentManager
                 .findFragmentById(R.id.nav_host_fragment)
@@ -53,16 +48,16 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         var brIntent = Intent(this, MyBroadcastReceiver::class.java)
 
 
-        val switch_reminder: Switch = findViewById(R.id.reminders) as Switch
-        switch_reminder.setOnCheckedChangeListener{_, isChecked ->
+        val switchReminder: Switch = findViewById<Switch>(R.id.reminders)
+        switchReminder.setOnCheckedChangeListener{ _, isChecked ->
             if(isChecked) {
-                switch_reminder.text = "Reminders ON"
+                switchReminder.text = "Reminders ON"
                 Toast.makeText(this@MainActivity, "ENABLE BR", Toast.LENGTH_SHORT).show()
                 brIntent.putExtra("START", true)
                 sendBroadcast(brIntent)
             }
             else {
-                switch_reminder.text = "Reminders OFF"
+                switchReminder.text = "Reminders OFF"
                 Toast.makeText(this@MainActivity, "DISABLE BR", Toast.LENGTH_SHORT).show()
                 brIntent.putExtra("START", false)
                 sendBroadcast(brIntent)
@@ -92,60 +87,49 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 if (permissions[0].equals(Manifest.permission.SEND_SMS)
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    // Permission was granted.
+                    // Tilgang ble gitt.
                 } else {
-                    // Permission denied.
-                    Toast.makeText(this,"Failure to obtain permission!",Toast.LENGTH_LONG).show()
+                    // Tilgang nektet
                 }
             }
         }
-
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     fun setSharedPreferance () {
         val sharedPref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val edit = sharedPref.edit()
+
         edit.clear()
         edit.putString("defaultMessage", "Husk avtalen med meg!")
         edit.putString("messageTime", "15:32")
         edit.apply()
-        val fef = sharedPref.getString("defaultMessage", null)
     }
     private fun checkForSmsPermission() {
-        Log.d(TAG,"Asking for permissions")
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.SEND_SMS
             ) !=
             PackageManager.PERMISSION_GRANTED
         ) {
-            Toast.makeText(applicationContext, "Permission not granted", Toast.LENGTH_SHORT).show()
-            Log.d(TAG,"Permissions not granted")
-
-            // Permission not yet granted. Use requestPermissions().
-            // MY_PERMISSIONS_REQUEST_SEND_SMS is an
-            // app-defined int constant. The callback method gets the
-            // result of the request.
+            Log.d(TAG,"Tilgang nektet")
             ActivityCompat.requestPermissions(
                 this, arrayOf(Manifest.permission.SEND_SMS),
                 MY_PERMISSIONS_REQUEST_SEND_SMS
             )
         } else {
-            // Permission already granted. Enable the SMS button.
-            Log.d(TAG, "Permissions was granted")
+            Log.d(TAG, "Tilgang ble gitt")
         }
     }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "AppointmentNotifications"
-            val descriptionText = "AppointmentNotifications will be shown here"
+            val descriptionText = "AppointmentNotifications vises her"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
