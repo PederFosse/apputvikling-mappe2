@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Switch
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -52,19 +53,22 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         var brIntent = Intent(this, MyBroadcastReceiver::class.java)
 
 
+        val switch_reminder: Switch = findViewById(R.id.reminders) as Switch
+        switch_reminder.setOnCheckedChangeListener{_, isChecked ->
+            if(isChecked) {
+                switch_reminder.text = "Reminders ON"
+                Toast.makeText(this@MainActivity, "ENABLE BR", Toast.LENGTH_SHORT).show()
+                brIntent.putExtra("START", true)
+                sendBroadcast(brIntent)
+            }
+            else {
+                switch_reminder.text = "Reminders OFF"
+                Toast.makeText(this@MainActivity, "DISABLE BR", Toast.LENGTH_SHORT).show()
+                brIntent.putExtra("START", false)
+                sendBroadcast(brIntent)
+            }
+        }
 
-        val btn_enable = findViewById(R.id.enableReminders) as Button
-        btn_enable.setOnClickListener {
-            Toast.makeText(this@MainActivity, "ENABLE BR", Toast.LENGTH_SHORT).show()
-            brIntent.putExtra("START", true)
-            sendBroadcast(brIntent)
-        }
-        val btn_disable = findViewById(R.id.disableReminders) as Button
-        btn_disable.setOnClickListener {
-            Toast.makeText(this@MainActivity, "DISABLE BR", Toast.LENGTH_SHORT).show()
-            brIntent.putExtra("START", false)
-            sendBroadcast(brIntent)
-        }
 
 
     }
