@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Build
 import android.os.IBinder
 import android.telephony.SmsManager
+import android.text.format.DateUtils
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -21,6 +22,8 @@ import com.example.mappe2.data.ContactRoomDatabase
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneId
+
 val TAG = "MELDINGGUTTA"
 
 
@@ -51,7 +54,11 @@ class MySendService : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Toast.makeText(applicationContext, "Started mySendService", Toast.LENGTH_SHORT).show()
 
-        sendMessages(myAppointments, myContacts)
+        val todaysMessages = myAppointments?.filter { appointment ->
+            DateUtils.isToday(appointment.time.atZone(ZoneId.of("Europe/Oslo")).toInstant().toEpochMilli())
+        }
+
+        sendMessages(todaysMessages, myContacts)
         notificationPopup(myAppointments)
 
         return super.onStartCommand(intent, flags, startId)
